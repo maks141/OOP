@@ -2,8 +2,6 @@ import itertools
 import os
 import time
 
-from typing import List
-
 class Singleton(type):
     _instances = {}
     def __call__(cls, *args, **kwargs):
@@ -17,10 +15,26 @@ class Robot(metaclass = Singleton):
     serial_number : str = 'АА001221-56'
     name : str = None
     place : str = None
-    functions : List[str] = list()
+
+    def build_house(self) -> str:
+        return None
+
+    def build_barn(self) -> str:
+        return None
+    
+    def add_floor(self) -> str:
+        return None
+
+    def demolish_floor(self) -> str:
+        return None
 
     def __str__(self) -> str:
-        funs = 'Отсутствуют' if len(self.functions) == 0 else ', '.join(self.functions)
+        funs = []
+        for fun in [self.build_house, self.build_barn, 
+                    self.add_floor, self.demolish_floor]:
+            funs.append(fun())
+        funs = list(filter(None, funs))
+        funs = 'Отсутствуют' if len(funs) == 0 else ', '.join(funs).capitalize()
 
         return f'Серийный номер: {self.serial_number}.\n' + \
                 f'Имя: {self.name}.\n' + \
@@ -38,21 +52,41 @@ class RobotDecorator(Robot):
     def __init__(self, robot):
         self.robot = robot
 
+    def build_house(self) -> str:
+        return self.robot.build_house()
+
+    def build_barn(self) -> str:
+        return self.robot.build_barn()
+    
+    def add_floor(self) -> str:
+        return self.robot.add_floor()
+
+    def demolish_floor(self) -> str:
+        return self.robot.demolish_floor()
+
 class RobotVita(RobotDecorator):
     def __init__(self, robot):
         super().__init__(robot)
         self.name = 'Вита'
         self.place = 'Робошкола'
-        self.functions.append('постройка домов')
-        self.functions.append('постройка сараев')
+
+    def build_house(self) -> str:
+        return 'постройка домов'
+
+    def build_barn(self) -> str:
+        return 'постройка сараев'
 
 class RobotVitaliy(RobotDecorator):
     def __init__(self, robot):
         super().__init__(robot)
         self.name = 'Виталий'
         self.place = 'Предприятие "ООО Кошмарик"'
-        self.functions.append('добавление этажей к постройкам')
-        self.functions.append('снос верхних этажей у построек')
+
+    def add_floor(self) -> str:
+        return 'добавление этажей к постройкам'
+
+    def demolish_floor(self) -> str:
+        return 'снос верхних этажей у построек'
 
 def print_loading(text : str):
     os.system('cls')

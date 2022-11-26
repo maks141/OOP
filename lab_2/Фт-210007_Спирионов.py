@@ -2,6 +2,12 @@ from math import sqrt
 from abc import ABC, abstractmethod
 from prettytable import PrettyTable
 
+class ChooseLang():
+    def __init__(self, lang):
+        self.lang = lang
+
+l = ChooseLang('en') # en or ru 
+
 class Figure(ABC):
     def __init__(self):
         return 'Создание фигуры..'
@@ -84,39 +90,45 @@ class Side(Point):
 p = Point()
 s = Side()
 
-fig_amount = int(input('Сколько фигур вы хотите создать?: '))
+if l.lang == 'ru':
+    fig_amount = int(input('Сколько фигур вы хотите создать?: '))
+elif l.lang == 'en':
+    fig_amount = int(input('How many shapes do you want to create?: '))
 
 
 fig_dict = {}
 for i in range(fig_amount):
-    fig_type = input('Какой тип фигуры вам нужен?(возможные типы: треугольник, круг, четырехугольк) ').lower()
-    if fig_type == 'треугольник':
-        x_1 = int(input('Введите х1: '))
-        y_1 = int(input('Введите y1: '))
-        x_2 = int(input('Введите х2: '))
-        y_2 = int(input('Введите y2: '))
-        x_3 = int(input('Введите х3: '))
-        y_3 = int(input('Введите y3: '))
+    if l.lang == 'ru':
+        fig_type = input('Какой тип фигуры вам нужен?(возможные типы: треугольник, круг, четырехугольк) ').lower()
+    elif l.lang == 'en':
+        fig_type = input('What type of figure do you need? (possible types: triangle, circle, square) ').lower()
+    if fig_type == 'треугольник' or fig_type == 'triangle':
+        x_1 = int(input('х1: '))
+        y_1 = int(input('y1: '))
+        x_2 = int(input('х2: '))
+        y_2 = int(input('y2: '))
+        x_3 = int(input('х3: '))
+        y_3 = int(input('y3: '))
         tri = Triangle(s.get_side(p.get_point(x_1, y_1), p.get_point(x_2, y_2)), s.get_side(p.get_point(x_2, y_2), p.get_point(x_3, y_3)), s.get_side(p.get_point(x_3, y_3)), p.get_point(x_1, y_1))
         key, value = tri.name, tri.area()
         fig_dict[key] = value
-    elif fig_type == 'круг':
-        x_1 = int(input('Введите х1: '))
-        y_1 = int(input('Введите y1: '))
-        x_2 = int(input('Введите х2: '))
-        y_2 = int(input('Введите y2: '))
+    elif fig_type == 'круг' or fig_type == 'circle':
+        x_1 = int(input('х1: '))
+        y_1 = int(input('y1: '))
+        x_2 = int(input('х2: '))
+        y_2 = int(input('y2: '))
         circ = Circle(s.get_side(p.get_point(x_1, y_1), p.get_point(x_2, y_2)))
         key, value = circ.name, circ.area()
         fig_dict[key] = value
-    elif fig_type == 'четырехугольник':
-        x_1 = int(input('Введите х1: '))
-        y_1 = int(input('Введите y1: '))
-        x_2 = int(input('Введите х2: '))
-        y_2 = int(input('Введите y2: '))
-        x_3 = int(input('Введите х3: '))
-        y_3 = int(input('Введите y3: '))
-        x_4 = int(input('Введите х4: '))
-        y_4 = int(input('Введите y4: '))
+    elif fig_type == 'четырехугольник' or fig_type == 'square':
+        x_1 = int(input('х1: '))
+        y_1 = int(input('y1: '))
+        x_2 = int(input('х2: '))
+        y_2 = int(input('y2: '))
+        x_3 = int(input('х3: '))
+        y_3 = int(input('y3: '))
+        x_4 = int(input('х4: '))
+        y_4 = int(input('y4: '))
         quadr = Quadrilateral(s.get_side(p.get_point(x_1, y_1), p.get_point(x_2, y_2)), s.get_side(p.get_point(x_2, y_2), p.get_point(x_3, y_3)), s.get_side(p.get_point(x_3, y_3)), p.get_point(x_4, y_4), s.get_side(p.get_point(x_4, y_4)), p.get_point(x_1, y_1))
         key, value = quadr.name, quadr.area()
         fig_dict[key] = value
